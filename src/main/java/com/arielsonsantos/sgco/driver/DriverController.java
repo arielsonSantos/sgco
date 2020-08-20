@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/drivers")
-public class DriverResource {
+public class DriverController {
 
     @GetMapping()
     public String findAll() {

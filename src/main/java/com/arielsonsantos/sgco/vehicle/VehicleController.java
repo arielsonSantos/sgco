@@ -19,4 +19,5 @@ public class VehicleController {
     public ResponseEntity<List<Vehicle>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
+
 }
