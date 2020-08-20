@@ -2,22 +2,17 @@ package com.arielsonsantos.sgco.client;
 
 import com.arielsonsantos.sgco.address.Address;
 import com.arielsonsantos.sgco.phone.Phone;
+import com.arielsonsantos.sgco.rental.Rental;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-//@Entity
+@Entity
 public class Client implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String sobrenome;
@@ -27,8 +22,15 @@ public class Client implements Serializable {
     private String rgIe;
     private String email;
     private ClientStatus status;
-    private List<Address> enderecos = new ArrayList<>();
-    private List<Phone> telefones = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client")
+    private Set<Rental> locacoes = new HashSet<>();
+
+    @OneToMany(mappedBy = "client")
+    private Set<Address> enderecos = new HashSet<>();
+
+    @OneToMany(mappedBy = "client")
+    private Set<Phone> telefones = new HashSet<>();
 
     public Client() {
     }
@@ -112,11 +114,15 @@ public class Client implements Serializable {
         this.status = status;
     }
 
-    public List<Address> getEnderecos() {
+    public Set<Rental> getLocacoes() {
+        return locacoes;
+    }
+
+    public Set<Address> getEnderecos() {
         return enderecos;
     }
 
-    public List<Phone> getTelefones() {
+    public Set<Phone> getTelefones() {
         return telefones;
     }
 

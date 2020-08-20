@@ -1,20 +1,26 @@
 package com.arielsonsantos.sgco.containertype;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Objects;
+import com.arielsonsantos.sgco.container.Container;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-//@Entity
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
 public class ContainerType implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private Double valor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "tipo")
+    private Set<Container> cacambas = new HashSet<>();
 
     public ContainerType() {
     }
@@ -42,6 +48,10 @@ public class ContainerType implements Serializable {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public Set<Container> getCacambas() {
+        return cacambas;
     }
 
     @Override

@@ -1,23 +1,33 @@
 package com.arielsonsantos.sgco.container;
 
 import com.arielsonsantos.sgco.containertype.ContainerType;
+import com.arielsonsantos.sgco.rental.Rental;
+import com.arielsonsantos.sgco.rentalvehiclecontainerdriver.RentalVehicleContainerDriver;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-//@Entity
+@Entity
 public class Container implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer numero;
+
+    @ManyToOne()
+    @JoinColumn(name = "type_id")
     private ContainerType tipo;
+
     private ContainerStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.rental")
+    private Set<RentalVehicleContainerDriver> locacoes = new HashSet<>();
 
     public Container() {
     }
@@ -59,6 +69,10 @@ public class Container implements Serializable {
 
     public void setStatus(ContainerStatus status) {
         this.status = status;
+    }
+
+    public Set<RentalVehicleContainerDriver> getLocacoes() {
+        return locacoes;
     }
 
     @Override

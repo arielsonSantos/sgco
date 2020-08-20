@@ -1,20 +1,26 @@
 package com.arielsonsantos.sgco.driver;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.arielsonsantos.sgco.rentalvehiclecontainerdriver.RentalVehicleContainerDriver;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-//@Entity
+@Entity
 public class Driver implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private DriverStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.rental")
+    private List<RentalVehicleContainerDriver> locacoes = new ArrayList<>();
 
     public Driver() {
     }
@@ -42,6 +48,10 @@ public class Driver implements Serializable {
 
     public void setStatus(DriverStatus status) {
         this.status = status;
+    }
+
+    public List<RentalVehicleContainerDriver> getLocacoes() {
+        return locacoes;
     }
 
     @Override

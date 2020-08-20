@@ -14,8 +14,4 @@ public class VehicleService {
     public List<Vehicle> findAll() {
         return repository.findAll();
     }
-
-    public List<Vehicle> saveAll(List<Vehicle> vehicles) {
-        return repository.saveAll(vehicles);
-    }
 }
