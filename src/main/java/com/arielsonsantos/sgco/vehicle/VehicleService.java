@@ -1,5 +1,6 @@
 package com.arielsonsantos.sgco.vehicle;
 
+import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import com.arielsonsantos.sgco.rental.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,6 @@ public class VehicleService {
 
     public Vehicle findById(Integer id) {
         Optional<Vehicle> vehicle = repository.findById(id);
-        return vehicle.orElse(null);
+        return vehicle.orElseThrow(() -> new ObjectNotFoundException("Veículo com id " + id + " não encontrado!"));
     }
 }

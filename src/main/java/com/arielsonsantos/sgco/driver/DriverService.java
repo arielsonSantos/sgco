@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.driver;
 
 import com.arielsonsantos.sgco.containertype.ContainerType;
+import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,6 @@ public class DriverService {
 
     public Driver findById(Integer id) {
         Optional<Driver> driver = repository.findById(id);
-        return driver.orElse(null);
+        return driver.orElseThrow(() -> new ObjectNotFoundException("Motorista com id " + id + " não encontrado!"));
     }
 }

@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.phone;
 
 import com.arielsonsantos.sgco.dumplocation.DumpLocation;
+import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,6 @@ public class PhoneService {
 
     public Phone findById(Integer id) {
         Optional<Phone> phone = repository.findById(id);
-        return phone.orElse(null);
+        return phone.orElseThrow(() -> new ObjectNotFoundException("Telefone com id " + id + " não encontrado!"));
     }
 }

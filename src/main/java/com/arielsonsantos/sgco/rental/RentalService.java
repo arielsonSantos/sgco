@@ -1,5 +1,6 @@
 package com.arielsonsantos.sgco.rental;
 
+import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import com.arielsonsantos.sgco.phone.Phone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,6 @@ public class RentalService {
 
     public Rental findById(Integer id) {
         Optional<Rental> rental = repository.findById(id);
-        return rental.orElse(null);
+        return rental.orElseThrow(() -> new ObjectNotFoundException("Locação com id " + id + " não encontrado!"));
     }
 }

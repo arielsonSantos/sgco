@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.container;
 
 import com.arielsonsantos.sgco.client.Client;
+import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,6 @@ public class ContainerService {
 
     public Container findById(Integer id) {
         Optional<Container> container = repository.findById(id);
-        return container.orElse(null);
+        return container.orElseThrow(() -> new ObjectNotFoundException("Caçamba com id " + id + " não encontrado!"));
     }
 }
