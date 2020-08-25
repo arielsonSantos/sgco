@@ -120,22 +120,18 @@ public class Application implements CommandLineRunner {
 		Driver odilon = new Driver("Odilon", DriverStatus.TRECHO);
 		driverRepository.saveAll(Arrays.asList(celso, odilon));
 
-		Rental rental1 = new Rental(new Date(), new Date(), 100.0D, arielson, vidal, RentalStatus.AGUARDANDO_ENTREGA);
-		Rental rental2 = new Rental(new Date(), new Date(), 200.0D, carol, barroso, RentalStatus.AGUARDANDO_RETIRADA);
+		Rental rental1 = new Rental(new Date(), new Date(), arielson, vidal, RentalStatus.AGUARDANDO_ENTREGA);
+		Rental rental2 = new Rental(new Date(), new Date(), carol, barroso, RentalStatus.AGUARDANDO_RETIRADA);
 		rentalRepository.saveAll(Arrays.asList(rental1, rental2));
 
 		// Relações:
 
-		// Cliente - Endereços
-		vidal.getClients().addAll(Arrays.asList(arielson, carol));
-		barroso.getClients().addAll(Arrays.asList(arielson, carol));
-		addressRepository.saveAll(Arrays.asList(vidal, barroso));
-
-		// Cliente - Telefones
-		phoneCarol.getClients().add(carol);
-		phoneFrancisca.getClients().add(arielson);
-		phoneJoao.getClients().add(arielson);
-		phoneRepository.saveAll(Arrays.asList(phoneCarol, phoneFrancisca, phoneJoao));
+		// Cliente - Endereços e Telefones
+		carol.getAddresses().add(barroso);
+		arielson.getAddresses().addAll(Arrays.asList(vidal, barroso));
+		carol.getPhones().add(phoneCarol);
+		arielson.getPhones().addAll(Arrays.asList(phoneFrancisca, phoneCarol, phoneJoao));
+		clientRepository.saveAll(Arrays.asList(carol, arielson));
 
 		// Motorista - Veículo
 		DriverVehicle celsoMercedes = new DriverVehicle(celso, mercedes);

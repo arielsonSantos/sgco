@@ -19,8 +19,7 @@ public class Phone implements Serializable {
     private String numero;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "phone_client", joinColumns = @JoinColumn(name = "phone_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
+    @ManyToMany(mappedBy = "phones")
     private Set<Client> clients = new HashSet<>();
 
     public Phone() {

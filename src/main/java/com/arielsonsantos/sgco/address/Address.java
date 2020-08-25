@@ -19,8 +19,7 @@ public class Address implements Serializable {
     private String numero;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "address_client", joinColumns = @JoinColumn(name = "address_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
+    @ManyToMany(mappedBy = "addresses")
     private Set<Client> clients = new HashSet<>();
 
     public Address() {

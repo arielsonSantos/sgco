@@ -1,14 +1,13 @@
 package com.arielsonsantos.sgco.container;
 
 import com.arielsonsantos.sgco.containertype.ContainerType;
+import com.arielsonsantos.sgco.rental.Rental;
 import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Container implements Serializable {
@@ -26,7 +25,7 @@ public class Container implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "id.rental")
-    private Set<RentalContainers> locacoes = new HashSet<>();
+    private Set<RentalContainers> rentalContainers = new HashSet<>();
 
     public Container() {
     }
@@ -70,8 +69,19 @@ public class Container implements Serializable {
         this.status = status;
     }
 
-    public Set<RentalContainers> getLocacoes() {
-        return locacoes;
+    public Set<RentalContainers> getRentalContainers() {
+        return rentalContainers;
+    }
+
+    @JsonIgnore
+    public List<Rental> getRentals() {
+         List<Rental> rentals = new ArrayList<>();
+
+         for(RentalContainers  rentalContainers: this.rentalContainers) {
+             rentals.add(rentalContainers.getRental());
+         }
+
+         return rentals;
     }
 
     @Override

@@ -39,10 +39,9 @@ public class Rental implements Serializable {
     public Rental() {
     }
 
-    public Rental(Date dataLocacao, Date dataRetirada, Double total, Client client, Address address, RentalStatus status) {
+    public Rental(Date dataLocacao, Date dataRetirada, Client client, Address address, RentalStatus status) {
         this.dataLocacao = dataLocacao;
         this.dataRetirada = dataRetirada;
-        this.total = total;
         this.client = client;
         this.address = address;
         this.status = status;
@@ -69,6 +68,12 @@ public class Rental implements Serializable {
     }
 
     public Double getTotal() {
+        total = 0D;
+
+        for(RentalContainers rentalContainers : this.rentalContainers) {
+            total += rentalContainers.getContainer().getTipo().getValor();
+        }
+
         return total;
     }
 

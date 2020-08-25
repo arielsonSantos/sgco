@@ -31,10 +31,12 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client")
     private Set<Rental> rentals = new HashSet<>();
 
-    @ManyToMany(mappedBy = "clients")
+    @ManyToMany()
+    @JoinTable(name = "client_address", joinColumns = @JoinColumn(name = "client_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Set<Address> addresses = new HashSet<>();
 
-    @ManyToMany(mappedBy = "clients")
+    @ManyToMany
+    @JoinTable(name = "client_phone", joinColumns = @JoinColumn(name = "client_id"), inverseJoinColumns = @JoinColumn(name = "phone_id"))
     private Set<Phone> phones = new HashSet<>();
 
     public Client() {
