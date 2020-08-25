@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.phone;
 
 import com.arielsonsantos.sgco.client.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +18,7 @@ public class Phone implements Serializable {
     private String ddd;
     private String numero;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "phone_client", joinColumns = @JoinColumn(name = "phone_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
     private Set<Client> clients = new HashSet<>();

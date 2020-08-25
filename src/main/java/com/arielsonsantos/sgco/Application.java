@@ -132,9 +132,10 @@ public class Application implements CommandLineRunner {
 		addressRepository.saveAll(Arrays.asList(vidal, barroso));
 
 		// Cliente - Telefones
-		carol.getPhones().add(phoneCarol);
-		arielson.getPhones().addAll(Arrays.asList(phoneFrancisca, phoneJoao));
-		clientRepository.saveAll(Arrays.asList(carol, arielson));
+		phoneCarol.getClients().add(carol);
+		phoneFrancisca.getClients().add(arielson);
+		phoneJoao.getClients().add(arielson);
+		phoneRepository.saveAll(Arrays.asList(phoneCarol, phoneFrancisca, phoneJoao));
 
 		// Motorista - Veículo
 		DriverVehicle celsoMercedes = new DriverVehicle(celso, mercedes);

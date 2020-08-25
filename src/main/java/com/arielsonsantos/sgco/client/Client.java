@@ -34,7 +34,6 @@ public class Client implements Serializable {
     @ManyToMany(mappedBy = "clients")
     private Set<Address> addresses = new HashSet<>();
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "clients")
     private Set<Phone> phones = new HashSet<>();
 
