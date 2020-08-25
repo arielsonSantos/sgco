@@ -1,6 +1,6 @@
 package com.arielsonsantos.sgco.driver;
 
-import com.arielsonsantos.sgco.rentalvehiclecontainerdriver.RentalVehicleContainerDriver;
+import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -20,7 +20,7 @@ public class Driver implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "id.rental")
-    private List<RentalVehicleContainerDriver> locacoes = new ArrayList<>();
+    private List<RentalContainers> locacoes = new ArrayList<>();
 
     public Driver() {
     }
@@ -50,7 +50,7 @@ public class Driver implements Serializable {
         this.status = status;
     }
 
-    public List<RentalVehicleContainerDriver> getLocacoes() {
+    public List<RentalContainers> getLocacoes() {
         return locacoes;
     }
 

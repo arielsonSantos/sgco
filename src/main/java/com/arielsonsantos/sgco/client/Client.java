@@ -3,10 +3,14 @@ package com.arielsonsantos.sgco.client;
 import com.arielsonsantos.sgco.address.Address;
 import com.arielsonsantos.sgco.phone.Phone;
 import com.arielsonsantos.sgco.rental.Rental;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Client implements Serializable {
@@ -23,14 +27,16 @@ public class Client implements Serializable {
     private String email;
     private ClientStatus status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
-    private Set<Rental> locacoes = new HashSet<>();
+    private Set<Rental> rentals = new HashSet<>();
 
-    @OneToMany(mappedBy = "client")
-    private Set<Address> enderecos = new HashSet<>();
+    @ManyToMany(mappedBy = "clients")
+    private Set<Address> addresses = new HashSet<>();
 
-    @OneToMany(mappedBy = "client")
-    private Set<Phone> telefones = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "clients")
+    private Set<Phone> phones = new HashSet<>();
 
     public Client() {
     }
@@ -114,16 +120,16 @@ public class Client implements Serializable {
         this.status = status;
     }
 
-    public Set<Rental> getLocacoes() {
-        return locacoes;
+    public Set<Rental> getRentals() {
+        return rentals;
     }
 
-    public Set<Address> getEnderecos() {
-        return enderecos;
+    public Set<Address> getAddresses() {
+        return addresses;
     }
 
-    public Set<Phone> getTelefones() {
-        return telefones;
+    public Set<Phone> getPhones() {
+        return phones;
     }
 
     @Override

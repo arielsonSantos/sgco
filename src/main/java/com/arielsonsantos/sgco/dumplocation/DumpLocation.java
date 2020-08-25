@@ -19,8 +19,8 @@ public class DumpLocation implements Serializable {
     private Double valor;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "locaisDespejo")
-    private List<Rental> locacoes = new ArrayList<>();
+    @ManyToMany(mappedBy = "dumpLocations")
+    private List<Rental> rentals = new ArrayList<>();
 
     public DumpLocation() {
     }

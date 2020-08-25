@@ -1,12 +1,12 @@
-package com.arielsonsantos.sgco.rentalvehiclecontainerdriver;
+package com.arielsonsantos.sgco.rentalcontainers;
 
-public enum RentalVehicleContainerDriverStatus {
+public enum RentalContainersStatus {
     ENTREGA(0),
     RETIRADA(1);
 
     private final Integer status;
 
-    RentalVehicleContainerDriverStatus(Integer status) {
+    RentalContainersStatus(Integer status) {
         this.status = status;
     }
 

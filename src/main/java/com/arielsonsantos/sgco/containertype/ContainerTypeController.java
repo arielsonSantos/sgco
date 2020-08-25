@@ -1,4 +1,4 @@
-package com.arielsonsantos.sgco.rentalvehiclecontainerdriver;
+package com.arielsonsantos.sgco.containertype;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rental_history")
-public class RentalVehicleContainerDriverController {
+@RequestMapping(value = "/container-types")
+public class ContainerTypeController {
 
     @Autowired
-    private RentalVehicleContainerDriverService service;
+    private ContainerTypeService service;
 
     @GetMapping()
-    public ResponseEntity<List<RentalVehicleContainerDriver>> findAll() {
+    public ResponseEntity<List<ContainerType>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
-
 }

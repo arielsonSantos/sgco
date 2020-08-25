@@ -1,8 +1,7 @@
 package com.arielsonsantos.sgco.container;
 
 import com.arielsonsantos.sgco.containertype.ContainerType;
-import com.arielsonsantos.sgco.rental.Rental;
-import com.arielsonsantos.sgco.rentalvehiclecontainerdriver.RentalVehicleContainerDriver;
+import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -27,7 +26,7 @@ public class Container implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "id.rental")
-    private Set<RentalVehicleContainerDriver> locacoes = new HashSet<>();
+    private Set<RentalContainers> locacoes = new HashSet<>();
 
     public Container() {
     }
@@ -71,7 +70,7 @@ public class Container implements Serializable {
         this.status = status;
     }
 
-    public Set<RentalVehicleContainerDriver> getLocacoes() {
+    public Set<RentalContainers> getLocacoes() {
         return locacoes;
     }
 

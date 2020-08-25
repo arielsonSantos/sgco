@@ -1,4 +1,4 @@
-package com.arielsonsantos.sgco.driver;
+package com.arielsonsantos.sgco.rentalcontainers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/drivers")
-public class DriverController {
+@RequestMapping(value = "/rental-containers")
+public class RentalContainersController {
 
     @Autowired
-    private DriverService service;
+    private RentalContainersService service;
 
     @GetMapping()
-    public ResponseEntity<List<Driver>> findAll() {
+    public ResponseEntity<List<RentalContainers>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
+
 }

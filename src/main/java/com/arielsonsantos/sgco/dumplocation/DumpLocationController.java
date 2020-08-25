@@ -1,4 +1,4 @@
-package com.arielsonsantos.sgco.driver;
+package com.arielsonsantos.sgco.dumplocation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/drivers")
-public class DriverController {
+@RequestMapping(value = "/dumps")
+public class DumpLocationController {
 
     @Autowired
-    private DriverService service;
+    private DumpLocationService service;
 
     @GetMapping()
-    public ResponseEntity<List<Driver>> findAll() {
+    public ResponseEntity<List<DumpLocation>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
+
 }

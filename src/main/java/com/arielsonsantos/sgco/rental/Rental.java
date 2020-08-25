@@ -2,11 +2,8 @@ package com.arielsonsantos.sgco.rental;
 
 import com.arielsonsantos.sgco.address.Address;
 import com.arielsonsantos.sgco.client.Client;
-import com.arielsonsantos.sgco.container.Container;
-import com.arielsonsantos.sgco.driver.Driver;
 import com.arielsonsantos.sgco.dumplocation.DumpLocation;
-import com.arielsonsantos.sgco.rentalvehiclecontainerdriver.RentalVehicleContainerDriver;
-import com.arielsonsantos.sgco.vehicle.Vehicle;
+import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,32 +25,26 @@ public class Rental implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "address_id")
-    private Address endereco;
+    private Address address;
 
     private RentalStatus status;
 
     @ManyToMany
     @JoinTable(name = "rental_dump", joinColumns = @JoinColumn(name = "rental_id"), inverseJoinColumns = @JoinColumn(name = "dump_id"))
-    private List<DumpLocation> locaisDespejo = new ArrayList<>();
+    private List<DumpLocation> dumpLocations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id.cacamba")
-    private Set<RentalVehicleContainerDriver> cacambas = new HashSet<>();
-
-    @OneToMany(mappedBy = "id.veiculo")
-    private List<RentalVehicleContainerDriver> veiculos = new ArrayList<>();
-
-    @OneToMany(mappedBy = "id.motorista")
-    private List<RentalVehicleContainerDriver> motoristas = new ArrayList<>();
+    @OneToMany(mappedBy = "id.container")
+    private Set<RentalContainers> rentalContainers = new HashSet<>();
 
     public Rental() {
     }
 
-    public Rental(Date dataLocacao, Date dataRetirada, Double total, Client client, Address endereco, RentalStatus status) {
+    public Rental(Date dataLocacao, Date dataRetirada, Double total, Client client, Address address, RentalStatus status) {
         this.dataLocacao = dataLocacao;
         this.dataRetirada = dataRetirada;
         this.total = total;
         this.client = client;
-        this.endereco = endereco;
+        this.address = address;
         this.status = status;
     }
 
@@ -93,12 +84,12 @@ public class Rental implements Serializable {
         this.client = client;
     }
 
-    public Address getEndereco() {
-        return endereco;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setEndereco(Address endereco) {
-        this.endereco = endereco;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public RentalStatus getStatus() {
@@ -109,20 +100,12 @@ public class Rental implements Serializable {
         this.status = status;
     }
 
-    public List<DumpLocation> getLocaisDespejo() {
-        return locaisDespejo;
+    public List<DumpLocation> getDumpLocations() {
+        return dumpLocations;
     }
 
-    public List<RentalVehicleContainerDriver> getVeiculos() {
-        return veiculos;
-    }
-
-    public Set<RentalVehicleContainerDriver> getCacambas() {
-        return cacambas;
-    }
-
-    public List<RentalVehicleContainerDriver> getMotoristas() {
-        return motoristas;
+    public Set<RentalContainers> getRentalContainers() {
+        return rentalContainers;
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.arielsonsantos.sgco.address;
 
 import com.arielsonsantos.sgco.client.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Address implements Serializable {
@@ -15,29 +18,21 @@ public class Address implements Serializable {
     private String cep;
     private String numero;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "address_client", joinColumns = @JoinColumn(name = "address_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
+    private Set<Client> clients = new HashSet<>();
 
     public Address() {
     }
 
-    public Address(Client client, String cep, String numero) {
-        this.client = client;
+    public Address(String cep, String numero) {
         this.cep = cep;
         this.numero = numero;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public String getCep() {
@@ -54,6 +49,10 @@ public class Address implements Serializable {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
     }
 
     @Override

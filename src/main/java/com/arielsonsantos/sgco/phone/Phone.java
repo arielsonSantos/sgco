@@ -4,7 +4,9 @@ import com.arielsonsantos.sgco.client.Client;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Phone implements Serializable {
@@ -12,33 +14,23 @@ public class Phone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
-
     private String ddd;
     private String numero;
+
+    @ManyToMany
+    @JoinTable(name = "phone_client", joinColumns = @JoinColumn(name = "phone_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
+    private Set<Client> clients = new HashSet<>();
 
     public Phone() {
     }
 
-    public Phone(Client client, String ddd, String numero) {
-        this.client = client;
+    public Phone(String ddd, String numero) {
         this.ddd = ddd;
         this.numero = numero;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public String getDdd() {
@@ -55,6 +47,10 @@ public class Phone implements Serializable {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
     }
 
     @Override
