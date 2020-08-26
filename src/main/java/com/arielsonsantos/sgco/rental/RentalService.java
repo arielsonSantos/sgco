@@ -1,8 +1,9 @@
 package com.arielsonsantos.sgco.rental;
 
+import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
-import com.arielsonsantos.sgco.phone.Phone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +22,23 @@ public class RentalService {
     public Rental findById(Integer id) {
         Optional<Rental> rental = repository.findById(id);
         return rental.orElseThrow(() -> new ObjectNotFoundException("Locação com id " + id + " não encontrado!"));
+    }
+
+    public Rental insert(Rental rental) {
+        return repository.save(rental);
+    }
+
+    public void update(Rental rental) {
+        findById(rental.getId());
+        repository.save(rental);
+    }
+
+    public void delete(Integer id) {
+        findById(id);
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possível excluir o telefone, pois existem registros associados a ele!");
+        }
     }
 }

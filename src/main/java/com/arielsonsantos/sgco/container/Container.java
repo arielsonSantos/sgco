@@ -3,6 +3,7 @@ package com.arielsonsantos.sgco.container;
 import com.arielsonsantos.sgco.containertype.ContainerType;
 import com.arielsonsantos.sgco.rental.Rental;
 import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -73,7 +74,7 @@ public class Container implements Serializable {
         return rentalContainers;
     }
 
-    @JsonIgnore
+    @JsonIgnore // TODO alterar para @JsonBackReference?
     public List<Rental> getRentals() {
          List<Rental> rentals = new ArrayList<>();
 

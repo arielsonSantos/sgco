@@ -1,8 +1,9 @@
 package com.arielsonsantos.sgco.driver;
 
-import com.arielsonsantos.sgco.containertype.ContainerType;
+import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +22,23 @@ public class DriverService {
     public Driver findById(Integer id) {
         Optional<Driver> driver = repository.findById(id);
         return driver.orElseThrow(() -> new ObjectNotFoundException("Motorista com id " + id + " não encontrado!"));
+    }
+
+    public Driver insert(Driver driver) {
+        return repository.save(driver);
+    }
+
+    public void update(Driver driver) {
+        findById(driver.getId());
+        repository.save(driver);
+    }
+
+    public void delete(Integer id) {
+        findById(id);
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possível excluir o motorista, pois existem registros associados a ele!");
+        }
     }
 }

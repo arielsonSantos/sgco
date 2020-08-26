@@ -18,10 +18,6 @@ public class Driver implements Serializable {
     private String nome;
     private DriverStatus status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "id.rental")
-    private List<RentalContainers> locacoes = new ArrayList<>();
-
     public Driver() {
     }
 
@@ -48,10 +44,6 @@ public class Driver implements Serializable {
 
     public void setStatus(DriverStatus status) {
         this.status = status;
-    }
-
-    public List<RentalContainers> getLocacoes() {
-        return locacoes;
     }
 
     @Override

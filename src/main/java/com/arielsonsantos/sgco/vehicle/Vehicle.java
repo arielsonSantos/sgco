@@ -1,12 +1,10 @@
 package com.arielsonsantos.sgco.vehicle;
 
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,10 +17,6 @@ public class Vehicle implements Serializable {
     private String marca;
     private String modelo;
     private VehicleStatus status;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "id.rental")
-    private List<RentalContainers> locacoes = new ArrayList<>();
 
     public Vehicle() {
     }
@@ -59,10 +53,6 @@ public class Vehicle implements Serializable {
 
     public void setStatus(VehicleStatus status) {
         this.status = status;
-    }
-
-    public List<RentalContainers> getLocacoes() {
-        return locacoes;
     }
 
     @Override
