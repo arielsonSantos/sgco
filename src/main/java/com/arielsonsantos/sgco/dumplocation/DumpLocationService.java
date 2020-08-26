@@ -1,9 +1,13 @@
 package com.arielsonsantos.sgco.dumplocation;
 
+import com.arielsonsantos.sgco.driver.Driver;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,11 @@ public class DumpLocationService {
 
     public List<DumpLocation> findAll() {
         return repository.findAll();
+    }
+
+    public Page<DumpLocation> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     public DumpLocation findById(Integer id) {

@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.driver;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,6 +24,15 @@ public class DriverController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Driver> findById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping(path = "/page")
+    public ResponseEntity<Page<Driver>> findPage(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "id") String orderBy) {
+        return ResponseEntity.ok().body(service.findPage(page, linesPerPage, orderBy, direction));
     }
 
     @PostMapping

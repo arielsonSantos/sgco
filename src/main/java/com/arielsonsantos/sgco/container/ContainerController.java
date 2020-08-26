@@ -1,7 +1,9 @@
 package com.arielsonsantos.sgco.container;
 
+import com.arielsonsantos.sgco.client.Client;
 import com.arielsonsantos.sgco.container.Container;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,6 +26,15 @@ public class ContainerController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Container> findById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping(path = "/page")
+    public ResponseEntity<Page<Container>> findPage(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "id") String orderBy) {
+        return ResponseEntity.ok().body(service.findPage(page, linesPerPage, orderBy, direction));
     }
 
     @PostMapping

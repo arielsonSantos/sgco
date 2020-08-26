@@ -1,6 +1,8 @@
 package com.arielsonsantos.sgco.dumplocation;
 
+import com.arielsonsantos.sgco.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,6 +25,15 @@ public class DumpLocationController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<DumpLocation> findById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping(path = "/page")
+    public ResponseEntity<Page<DumpLocation>> findPage(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "id") String orderBy) {
+        return ResponseEntity.ok().body(service.findPage(page, linesPerPage, orderBy, direction));
     }
 
     @PostMapping

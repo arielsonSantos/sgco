@@ -2,9 +2,11 @@ package com.arielsonsantos.sgco.vehicle;
 
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
-import com.arielsonsantos.sgco.rental.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,11 @@ public class VehicleService {
     public Vehicle findById(Integer id) {
         Optional<Vehicle> vehicle = repository.findById(id);
         return vehicle.orElseThrow(() -> new ObjectNotFoundException("Veículo com id " + id + " não encontrado!"));
+    }
+
+    public Page<Vehicle> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     public Vehicle insert(Vehicle vehicle) {

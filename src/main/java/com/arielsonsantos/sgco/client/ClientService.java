@@ -1,10 +1,14 @@
 package com.arielsonsantos.sgco.client;
 
+import com.arielsonsantos.sgco.address.Address;
 import com.arielsonsantos.sgco.client.Client;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +22,11 @@ public class ClientService {
 
     public List<Client> findAll() {
         return repository.findAll();
+    }
+
+    public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     public Client findById(Integer id) {
