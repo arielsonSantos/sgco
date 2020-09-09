@@ -1,7 +1,5 @@
 package com.arielsonsantos.sgco.client;
 
-import com.arielsonsantos.sgco.address.Address;
-import com.arielsonsantos.sgco.client.Client;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,16 @@ public class ClientService {
         return repository.save(client);
     }
 
-    public void update(Client client) {
-        findById(client.getId());
+    public void update(Client newClient, Integer id) {
+        Client client = findById(id);
+        client.setNome(newClient.getNome());
+        client.setSobrenome(newClient.getSobrenome());
+        client.setNascimento(newClient.getNascimento());
+        client.setObservacoes(newClient.getObservacoes());
+        client.setCpfCnpj(newClient.getCpfCnpj());
+        client.setRgIe(newClient.getRgIe());
+        client.setEmail(newClient.getEmail());
+        client.setStatus(newClient.getStatus());
         repository.save(client);
     }
 

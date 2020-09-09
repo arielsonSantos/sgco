@@ -54,6 +54,10 @@ public class Address implements Serializable {
         return clients;
     }
 
+    public static Address fromDTO(AddressDTO addressDTO) {
+        return new Address(addressDTO.getCep(), addressDTO.getNumero());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

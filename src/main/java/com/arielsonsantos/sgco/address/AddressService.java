@@ -36,8 +36,10 @@ public class AddressService {
         return repository.save(address);
     }
 
-    public void update(Address address) {
-        findById(address.getId());
+    public void update(Address newAddress, Integer id) {
+        Address address = findById(id);
+        address.setCep(newAddress.getCep());
+        address.setNumero(newAddress.getNumero());
         repository.save(address);
     }
 

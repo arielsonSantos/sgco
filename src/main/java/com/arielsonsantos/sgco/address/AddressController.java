@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/addresses")
@@ -17,13 +19,16 @@ public class AddressController {
     private AddressService service;
 
     @GetMapping()
-    public ResponseEntity<List<Address>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<AddressListDTO>> findAll() {
+        List<Address> addresses = service.findAll();
+        List<AddressListDTO> addressListDTO = addresses.stream().map(AddressListDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(addressListDTO);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Address> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<AddressListDTO> findById(@PathVariable Integer id) {
+        AddressListDTO addressListDTO = new AddressListDTO(service.findById(id));
+        return ResponseEntity.ok().body(addressListDTO);
     }
 
     @GetMapping(path = "/page")
@@ -36,15 +41,15 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Address address) {
-        Address newAddress = service.insert(address);
+    public ResponseEntity<Void> insert(@Valid @RequestBody AddressDTO addressDTO) {
+        Address newAddress = service.insert(Address.fromDTO(addressDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newAddress.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Address address/*, @PathVariable Integer id*/) {
-        service.update(address);
+    public ResponseEntity<Void> update(@Valid @RequestBody AddressDTO addressDTO, @PathVariable Integer id) {
+        service.update(Address.fromDTO(addressDTO), id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,6 +1,7 @@
 package com.arielsonsantos.sgco.client;
 
 import com.arielsonsantos.sgco.address.Address;
+import com.arielsonsantos.sgco.address.AddressDTO;
 import com.arielsonsantos.sgco.phone.Phone;
 import com.arielsonsantos.sgco.rental.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -131,6 +132,10 @@ public class Client implements Serializable {
 
     public Set<Phone> getPhones() {
         return phones;
+    }
+
+    public static Client fromDTO(ClientDTO clientDTO) {
+        return new Client(clientDTO.getNome(), clientDTO.getSobrenome(), clientDTO.getNascimento(), clientDTO.getObservacoes(), clientDTO.getCpfCnpj(), clientDTO.getRgIe(), clientDTO.getEmail(), clientDTO.getStatus());
     }
 
     @Override

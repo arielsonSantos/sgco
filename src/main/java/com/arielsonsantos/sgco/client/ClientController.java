@@ -1,15 +1,15 @@
 package com.arielsonsantos.sgco.client;
 
-import com.arielsonsantos.sgco.address.Address;
-import com.arielsonsantos.sgco.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/clients")
@@ -19,13 +19,15 @@ public class ClientController {
     private ClientService service;
 
     @GetMapping()
-    public ResponseEntity<List<Client>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<ClientListDTO>> findAll() {
+        List<Client> clients = service.findAll();
+        List<ClientListDTO> clientListDTO = clients.stream().map(ClientListDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(clientListDTO);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Client> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<ClientListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new ClientListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -38,15 +40,15 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Client client) {
-        Client newClient = service.insert(client);
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClientDTO clientDTO) {
+        Client newClient = service.insert(Client.fromDTO(clientDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newClient.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Client client/*, @PathVariable Integer id*/) {
-        service.update(client);
+    public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable Integer id) {
+        service.update(Client.fromDTO(clientDTO), id);
         return ResponseEntity.noContent().build();
     }
 
