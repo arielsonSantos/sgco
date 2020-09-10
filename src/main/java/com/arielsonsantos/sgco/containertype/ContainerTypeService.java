@@ -1,6 +1,5 @@
 package com.arielsonsantos.sgco.containertype;
 
-import com.arielsonsantos.sgco.container.Container;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,10 @@ public class ContainerTypeService {
         return repository.save(containerType);
     }
 
-    public void update(ContainerType containerType) {
-        findById(containerType.getId());
+    public void update(ContainerType newContainerType, Integer id) {
+        ContainerType containerType = findById(id);
+        containerType.setNome(newContainerType.getNome());
+        containerType.setValor(newContainerType.getValor());
         repository.save(containerType);
     }
 

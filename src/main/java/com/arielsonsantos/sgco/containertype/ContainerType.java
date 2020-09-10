@@ -54,6 +54,10 @@ public class ContainerType implements Serializable {
         return cacambas;
     }
 
+    public static ContainerType fromDTO(ContainerTypeDTO containerTypeDTO) {
+        return new ContainerType(containerTypeDTO.getNome(), containerTypeDTO.getValor());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

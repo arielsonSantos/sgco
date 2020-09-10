@@ -37,8 +37,11 @@ public class ContainerService {
         return repository.save(container);
     }
 
-    public void update(Container container) {
-        findById(container.getId());
+    public void update(Container newContainer, Integer id) {
+        Container container = findById(id);
+        container.setNumero(newContainer.getNumero());
+        container.setTipo(newContainer.getTipo());
+        container.setStatus(newContainer.getStatus());
         repository.save(container);
     }
 

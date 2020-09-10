@@ -1,15 +1,15 @@
 package com.arielsonsantos.sgco.container;
 
-import com.arielsonsantos.sgco.client.Client;
-import com.arielsonsantos.sgco.container.Container;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/containers")
@@ -19,13 +19,15 @@ public class ContainerController {
     private ContainerService service;
 
     @GetMapping()
-    public ResponseEntity<List<Container>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<ContainerListDTO>> findAll() {
+        List<Container> containers = service.findAll();
+        List<ContainerListDTO> containerListDTO = containers.stream().map(ContainerListDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(containerListDTO);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Container> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<ContainerListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new ContainerListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -38,15 +40,15 @@ public class ContainerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Container container) {
-        Container newContainer = service.insert(container);
+    public ResponseEntity<Void> insert(@Valid @RequestBody ContainerDTO containerDTO) {
+        Container newContainer = service.insert(Container.fromDTO(containerDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Container container/*, @PathVariable Integer id*/) {
-        service.update(container);
+    public ResponseEntity<Void> update(@Valid @RequestBody ContainerDTO containerDTO, @PathVariable Integer id) {
+        service.update(Container.fromDTO(containerDTO), id);
         return ResponseEntity.noContent().build();
     }
 

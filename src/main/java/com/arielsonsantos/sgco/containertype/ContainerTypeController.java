@@ -1,30 +1,33 @@
 package com.arielsonsantos.sgco.containertype;
 
-import com.arielsonsantos.sgco.container.Container;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/containerType-types")
+@RequestMapping(value = "/container-types")
 public class ContainerTypeController {
 
     @Autowired
     private ContainerTypeService service;
 
     @GetMapping()
-    public ResponseEntity<List<ContainerType>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<ContainerTypeListDTO>> findAll() {
+        List<ContainerType> containerTypes = service.findAll();
+        List<ContainerTypeListDTO> containerTypeListDTO = containerTypes.stream().map(ContainerTypeListDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(containerTypeListDTO);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ContainerType> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<ContainerTypeListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new ContainerTypeListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -37,15 +40,15 @@ public class ContainerTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody ContainerType containerType) {
-        ContainerType newContainer = service.insert(containerType);
+    public ResponseEntity<Void> insert(@Valid @RequestBody ContainerTypeDTO containerTypeDTO) {
+        ContainerType newContainer = service.insert(ContainerType.fromDTO(containerTypeDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody ContainerType containerType/*, @PathVariable Integer id*/) {
-        service.update(containerType);
+    public ResponseEntity<Void> update(@Valid @RequestBody ContainerTypeDTO containerTypeDTO, @PathVariable Integer id) {
+        service.update(ContainerType.fromDTO(containerTypeDTO), id);
         return ResponseEntity.noContent().build();
     }
 
