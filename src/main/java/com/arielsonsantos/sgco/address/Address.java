@@ -30,6 +30,11 @@ public class Address implements Serializable {
         this.numero = numero;
     }
 
+    public Address(AddressDTO addressDTO) {
+        this.cep = addressDTO.getCep();
+        this.numero = addressDTO.getNumero();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -52,10 +57,6 @@ public class Address implements Serializable {
 
     public Set<Client> getClients() {
         return clients;
-    }
-
-    public static Address fromDTO(AddressDTO addressDTO) {
-        return new Address(addressDTO.getCep(), addressDTO.getNumero());
     }
 
     @Override

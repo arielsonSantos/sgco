@@ -42,14 +42,14 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody AddressDTO addressDTO) {
-        Address newAddress = service.insert(Address.fromDTO(addressDTO));
+        Address newAddress = service.insert(new Address(addressDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newAddress.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody AddressDTO addressDTO, @PathVariable Integer id) {
-        service.update(Address.fromDTO(addressDTO), id);
+        service.update(new Address(addressDTO), id);
         return ResponseEntity.noContent().build();
     }
 

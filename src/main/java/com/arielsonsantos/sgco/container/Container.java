@@ -38,9 +38,10 @@ public class Container implements Serializable {
         this.status = status;
     }
 
-    public Container(Integer numero, ContainerType tipo) {
-        this.numero = numero;
-        this.tipo = tipo;
+    public Container(ContainerDTO containerDTO) {
+        this.numero = containerDTO.getNumero();
+        this.tipo = containerDTO.getTipo();
+        this.status = containerDTO.getStatus();
     }
 
     public Integer getId() {
@@ -84,10 +85,6 @@ public class Container implements Serializable {
          }
 
          return rentals;
-    }
-
-    public static Container fromDTO(ContainerDTO containerDTO) {
-        return new Container(containerDTO.getNumero(), containerDTO.getTipo(), containerDTO.getStatus());
     }
 
     @Override

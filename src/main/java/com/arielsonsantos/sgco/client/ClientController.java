@@ -41,14 +41,14 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody ClientDTO clientDTO) {
-        Client newClient = service.insert(Client.fromDTO(clientDTO));
+        Client newClient = service.insert(new Client(clientDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newClient.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable Integer id) {
-        service.update(Client.fromDTO(clientDTO), id);
+        service.update(new Client(clientDTO), id);
         return ResponseEntity.noContent().build();
     }
 

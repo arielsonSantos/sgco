@@ -41,14 +41,14 @@ public class ContainerController {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody ContainerDTO containerDTO) {
-        Container newContainer = service.insert(Container.fromDTO(containerDTO));
+        Container newContainer = service.insert(new Container(containerDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody ContainerDTO containerDTO, @PathVariable Integer id) {
-        service.update(Container.fromDTO(containerDTO), id);
+        service.update(new Container(containerDTO), id);
         return ResponseEntity.noContent().build();
     }
 

@@ -54,6 +54,17 @@ public class Client implements Serializable {
         this.status = status;
     }
 
+    public Client(ClientDTO clientDTO) {
+        this.nome = clientDTO.getNome();
+        this.sobrenome = clientDTO.getSobrenome();
+        this.nascimento = clientDTO.getNascimento();
+        this.observacoes = clientDTO.getObservacoes();
+        this.cpfCnpj = clientDTO.getCpfCnpj();
+        this.rgIe = clientDTO.getRgIe();
+        this.email = clientDTO.getEmail();
+        this.status = clientDTO.getStatus();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -132,10 +143,6 @@ public class Client implements Serializable {
 
     public Set<Phone> getPhones() {
         return phones;
-    }
-
-    public static Client fromDTO(ClientDTO clientDTO) {
-        return new Client(clientDTO.getNome(), clientDTO.getSobrenome(), clientDTO.getNascimento(), clientDTO.getObservacoes(), clientDTO.getCpfCnpj(), clientDTO.getRgIe(), clientDTO.getEmail(), clientDTO.getStatus());
     }
 
     @Override
