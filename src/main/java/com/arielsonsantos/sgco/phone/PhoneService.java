@@ -36,8 +36,8 @@ public class PhoneService {
         return repository.save(phone);
     }
 
-    public void update(Phone phone) {
-        findById(phone.getId());
+    public void update(Phone phone, Integer id) {
+        findById(id);
         repository.save(phone);
     }
 

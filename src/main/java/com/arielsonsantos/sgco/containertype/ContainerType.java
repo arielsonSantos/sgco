@@ -30,6 +30,10 @@ public class ContainerType implements Serializable {
         this.valor = valor;
     }
 
+    public ContainerType(ContainerTypeDTO containerTypeDTO) {
+        this(containerTypeDTO.getNome(), containerTypeDTO.getValor());
+    }
+
     public Integer getId() {
         return id;
     }
@@ -52,10 +56,6 @@ public class ContainerType implements Serializable {
 
     public Set<Container> getCacambas() {
         return cacambas;
-    }
-
-    public static ContainerType fromDTO(ContainerTypeDTO containerTypeDTO) {
-        return new ContainerType(containerTypeDTO.getNome(), containerTypeDTO.getValor());
     }
 
     @Override

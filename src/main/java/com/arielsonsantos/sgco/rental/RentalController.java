@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/rentals")
@@ -17,13 +19,13 @@ public class RentalController {
     private RentalService service;
 
     @GetMapping()
-    public ResponseEntity<List<Rental>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<RentalListDTO>> findAll() {
+        return ResponseEntity.ok().body(service.findAll().stream().map(RentalListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Rental> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<RentalListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new RentalListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -36,15 +38,15 @@ public class RentalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Rental rental) {
-        Rental newContainer = service.insert(rental);
+    public ResponseEntity<Void> insert(@Valid @RequestBody RentalDTO rentalDTO) {
+        Rental newContainer = service.insert(new Rental(rentalDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Rental rental/*, @PathVariable Integer id*/) {
-        service.update(rental);
+    public ResponseEntity<Void> update(@Valid @RequestBody RentalDTO rentalDTO, @PathVariable Integer id) {
+        service.update(new Rental(rentalDTO), id);
         return ResponseEntity.noContent().build();
     }
 

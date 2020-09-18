@@ -27,6 +27,10 @@ public class Vehicle implements Serializable {
         this.status = status;
     }
 
+    public Vehicle(VehicleDTO vehicleDTO) {
+        this(vehicleDTO.getMarca(), vehicleDTO.getModelo(), vehicleDTO.getStatus());
+    }
+
     public Integer getId() {
         return id;
     }

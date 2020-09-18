@@ -39,9 +39,7 @@ public class Container implements Serializable {
     }
 
     public Container(ContainerDTO containerDTO) {
-        this.numero = containerDTO.getNumero();
-        this.tipo = containerDTO.getTipo();
-        this.status = containerDTO.getStatus();
+        this(containerDTO.getNumero(), containerDTO.getTipo(), containerDTO.getStatus());
     }
 
     public Integer getId() {

@@ -20,9 +20,7 @@ public class AddressController {
 
     @GetMapping()
     public ResponseEntity<List<AddressListDTO>> findAll() {
-        List<Address> addresses = service.findAll();
-        List<AddressListDTO> addressListDTO = addresses.stream().map(AddressListDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok().body(addressListDTO);
+        return ResponseEntity.ok().body(service.findAll().stream().map(AddressListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")

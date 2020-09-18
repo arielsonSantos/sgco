@@ -5,50 +5,34 @@ import com.arielsonsantos.sgco.client.Client;
 import com.arielsonsantos.sgco.dumplocation.DumpLocation;
 import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-@Entity
-public class Rental implements Serializable {
+public class RentalListDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Date dataLocacao;
     private Date dataRetirada;
     private Double total;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id")
     private Client client;
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
     private Address address;
-
     private RentalStatus status;
+    private List<DumpLocation> dumpLocations;
+    private Set<RentalContainers> rentalContainers;
 
-    @ManyToMany
-    @JoinTable(name = "rental_dump", joinColumns = @JoinColumn(name = "rental_id"), inverseJoinColumns = @JoinColumn(name = "dump_id"))
-    private List<DumpLocation> dumpLocations = new ArrayList<>();
-
-    @OneToMany(mappedBy = "id.container")
-    private Set<RentalContainers> rentalContainers = new HashSet<>();
-
-    public Rental() {
+    public RentalListDTO() {
     }
 
-    public Rental(Date dataLocacao, Date dataRetirada, Client client, Address address, RentalStatus status) {
-        this.dataLocacao = dataLocacao;
-        this.dataRetirada = dataRetirada;
-        this.client = client;
-        this.address = address;
-        this.status = status;
-    }
-
-    public Rental(RentalDTO rentalDTO) {
-        this(rentalDTO.getDataLocacao(), rentalDTO.getDataRetirada(), rentalDTO.getClient(), rentalDTO.getAddress(), rentalDTO.getStatus());
+    public RentalListDTO(Rental rental) {
+        this.dataLocacao = rental.getDataLocacao();
+        this.dataRetirada = rental.getDataRetirada();
+        this.client = rental.getClient();
+        this.address = rental.getAddress();
+        this.status = rental.getStatus();
+        this.dumpLocations = rental.getDumpLocations();
+        this.rentalContainers = rental.getRentalContainers();
     }
 
     public Integer getId() {
@@ -115,18 +99,5 @@ public class Rental implements Serializable {
 
     public Set<RentalContainers> getRentalContainers() {
         return rentalContainers;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Rental)) return false;
-        Rental rental = (Rental) o;
-        return Objects.equals(id, rental.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

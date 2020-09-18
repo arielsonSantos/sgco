@@ -31,8 +31,7 @@ public class Address implements Serializable {
     }
 
     public Address(AddressDTO addressDTO) {
-        this.cep = addressDTO.getCep();
-        this.numero = addressDTO.getNumero();
+        this(addressDTO.getCep(), addressDTO.getNumero());
     }
 
     public Integer getId() {

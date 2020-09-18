@@ -20,9 +20,7 @@ public class ClientController {
 
     @GetMapping()
     public ResponseEntity<List<ClientListDTO>> findAll() {
-        List<Client> clients = service.findAll();
-        List<ClientListDTO> clientListDTO = clients.stream().map(ClientListDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok().body(clientListDTO);
+        return ResponseEntity.ok().body(service.findAll().stream().map(ClientListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")

@@ -1,14 +1,15 @@
 package com.arielsonsantos.sgco.phone;
 
-import com.arielsonsantos.sgco.dumplocation.DumpLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/phones")
@@ -18,13 +19,13 @@ public class PhoneController {
     private PhoneService service;
 
     @GetMapping()
-    public ResponseEntity<List<Phone>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<PhoneListDTO>> findAll() {
+        return ResponseEntity.ok().body(service.findAll().stream().map(PhoneListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Phone> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<PhoneListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new PhoneListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -37,15 +38,15 @@ public class PhoneController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Phone phone) {
-        Phone newContainer = service.insert(phone);
+    public ResponseEntity<Void> insert(@Valid @RequestBody PhoneDTO phoneDTO) {
+        Phone newContainer = service.insert(new Phone(phoneDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Phone phone/*, @PathVariable Integer id*/) {
-        service.update(phone);
+    public ResponseEntity<Void> update(@Valid @RequestBody PhoneDTO phoneDTO, @PathVariable Integer id) {
+        service.update(new Phone(phoneDTO), id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,14 +1,15 @@
 package com.arielsonsantos.sgco.dumplocation;
 
-import com.arielsonsantos.sgco.driver.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/dumps")
@@ -18,13 +19,13 @@ public class DumpLocationController {
     private DumpLocationService service;
 
     @GetMapping()
-    public ResponseEntity<List<DumpLocation>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<DumpLocationListDTO>> findAll() {
+        return ResponseEntity.ok().body(service.findAll().stream().map(DumpLocationListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<DumpLocation> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<DumpLocationListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new DumpLocationListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -37,15 +38,15 @@ public class DumpLocationController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody DumpLocation dumpLocation) {
-        DumpLocation newContainer = service.insert(dumpLocation);
+    public ResponseEntity<Void> insert(@Valid @RequestBody DumpLocationDTO dumpLocationDTO) {
+        DumpLocation newContainer = service.insert(new DumpLocation(dumpLocationDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody DumpLocation dumpLocation/*, @PathVariable Integer id*/) {
-        service.update(dumpLocation);
+    public ResponseEntity<Void> update(@Valid @RequestBody DumpLocationDTO dumpLocationDTO, @PathVariable Integer id) {
+        service.update(new DumpLocation(dumpLocationDTO), id);
         return ResponseEntity.noContent().build();
     }
 

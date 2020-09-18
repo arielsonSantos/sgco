@@ -1,6 +1,5 @@
 package com.arielsonsantos.sgco.dumplocation;
 
-import com.arielsonsantos.sgco.driver.Driver;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,8 @@ public class DumpLocationService {
         return repository.save(dumpLocation);
     }
 
-    public void update(DumpLocation dumpLocation) {
-        findById(dumpLocation.getId());
+    public void update(DumpLocation dumpLocation, Integer id) {
+        findById(id);
         repository.save(dumpLocation);
     }
 

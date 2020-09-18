@@ -36,8 +36,8 @@ public class RentalService {
         return repository.save(rental);
     }
 
-    public void update(Rental rental) {
-        findById(rental.getId());
+    public void update(Rental rental, Integer id) {
+        findById(id);
         repository.save(rental);
     }
 

@@ -30,6 +30,10 @@ public class DumpLocation implements Serializable {
         this.valor = valor;
     }
 
+    public DumpLocation(DumpLocationDTO dumpLocationDTO) {
+        this(dumpLocationDTO.getNome(), dumpLocationDTO.getValor());
+    }
+
     public Integer getId() {
         return id;
     }

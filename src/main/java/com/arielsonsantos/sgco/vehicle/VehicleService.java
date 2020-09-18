@@ -36,8 +36,8 @@ public class VehicleService {
         return repository.save(vehicle);
     }
 
-    public void update(Vehicle vehicle) {
-        findById(vehicle.getId());
+    public void update(Vehicle vehicle, Integer id) {
+        findById(id);
         repository.save(vehicle);
     }
 

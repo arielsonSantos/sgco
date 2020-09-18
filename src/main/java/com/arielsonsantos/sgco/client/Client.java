@@ -1,7 +1,6 @@
 package com.arielsonsantos.sgco.client;
 
 import com.arielsonsantos.sgco.address.Address;
-import com.arielsonsantos.sgco.address.AddressDTO;
 import com.arielsonsantos.sgco.phone.Phone;
 import com.arielsonsantos.sgco.rental.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,14 +54,16 @@ public class Client implements Serializable {
     }
 
     public Client(ClientDTO clientDTO) {
-        this.nome = clientDTO.getNome();
-        this.sobrenome = clientDTO.getSobrenome();
-        this.nascimento = clientDTO.getNascimento();
-        this.observacoes = clientDTO.getObservacoes();
-        this.cpfCnpj = clientDTO.getCpfCnpj();
-        this.rgIe = clientDTO.getRgIe();
-        this.email = clientDTO.getEmail();
-        this.status = clientDTO.getStatus();
+        this(
+                clientDTO.getNome(),
+                clientDTO.getSobrenome(),
+                clientDTO.getNascimento(),
+                clientDTO.getObservacoes(),
+                clientDTO.getCpfCnpj(),
+                clientDTO.getRgIe(),
+                clientDTO.getEmail(),
+                clientDTO.getStatus()
+        );
     }
 
     public Integer getId() {

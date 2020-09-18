@@ -1,14 +1,15 @@
 package com.arielsonsantos.sgco.vehicle;
 
-import com.arielsonsantos.sgco.rental.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/vehicles")
@@ -18,13 +19,13 @@ public class VehicleController {
     private VehicleService service;
 
     @GetMapping()
-    public ResponseEntity<List<Vehicle>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<VehicleListDTO>> findAll() {
+        return ResponseEntity.ok().body(service.findAll().stream().map(VehicleListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Vehicle> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<VehicleListDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new VehicleListDTO(service.findById(id)));
     }
 
     @GetMapping(path = "/page")
@@ -37,15 +38,15 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Vehicle vehicle) {
-        Vehicle newVehicle = service.insert(vehicle);
+    public ResponseEntity<Void> insert(@Valid @RequestBody VehicleDTO vehicleDTO) {
+        Vehicle newVehicle = service.insert(new Vehicle(vehicleDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newVehicle.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody Vehicle vehicle/*, @PathVariable Integer id*/) {
-        service.update(vehicle);
+    public ResponseEntity<Void> update(@Valid @RequestBody VehicleDTO vehicleDTO, @PathVariable Integer id) {
+        service.update(new Vehicle(vehicleDTO), id);
         return ResponseEntity.noContent().build();
     }
 

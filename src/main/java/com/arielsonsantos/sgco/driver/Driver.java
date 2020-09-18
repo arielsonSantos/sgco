@@ -1,12 +1,10 @@
 package com.arielsonsantos.sgco.driver;
 
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +22,10 @@ public class Driver implements Serializable {
     public Driver(String nome, DriverStatus status) {
         this.nome = nome;
         this.status = status;
+    }
+
+    public Driver(DriverDTO driverDTO) {
+        this(driverDTO.getNome(), driverDTO.getStatus());
     }
 
     public Integer getId() {

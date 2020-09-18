@@ -20,9 +20,7 @@ public class ContainerTypeController {
 
     @GetMapping()
     public ResponseEntity<List<ContainerTypeListDTO>> findAll() {
-        List<ContainerType> containerTypes = service.findAll();
-        List<ContainerTypeListDTO> containerTypeListDTO = containerTypes.stream().map(ContainerTypeListDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok().body(containerTypeListDTO);
+        return ResponseEntity.ok().body(service.findAll().stream().map(ContainerTypeListDTO::new).collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/{id}")
@@ -41,14 +39,14 @@ public class ContainerTypeController {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody ContainerTypeDTO containerTypeDTO) {
-        ContainerType newContainer = service.insert(ContainerType.fromDTO(containerTypeDTO));
+        ContainerType newContainer = service.insert(new ContainerType(containerTypeDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newContainer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody ContainerTypeDTO containerTypeDTO, @PathVariable Integer id) {
-        service.update(ContainerType.fromDTO(containerTypeDTO), id);
+        service.update(new ContainerType(containerTypeDTO), id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,6 +1,5 @@
 package com.arielsonsantos.sgco.driver;
 
-import com.arielsonsantos.sgco.containertype.ContainerType;
 import com.arielsonsantos.sgco.exceptions.DataIntegrityException;
 import com.arielsonsantos.sgco.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,8 @@ public class DriverService {
         return repository.save(driver);
     }
 
-    public void update(Driver driver) {
-        findById(driver.getId());
+    public void update(Driver driver, Integer id) {
+        findById(id);
         repository.save(driver);
     }
 

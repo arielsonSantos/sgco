@@ -30,6 +30,10 @@ public class Phone implements Serializable {
         this.numero = numero;
     }
 
+    public Phone(PhoneDTO phoneDTO) {
+        this(phoneDTO.getDdd(), phoneDTO.getNumero());
+    }
+
     public Integer getId() {
         return id;
     }
