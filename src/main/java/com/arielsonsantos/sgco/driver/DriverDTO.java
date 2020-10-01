@@ -24,15 +24,7 @@ public class DriverDTO implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public DriverStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(DriverStatus status) {
-        this.status = status;
     }
 }

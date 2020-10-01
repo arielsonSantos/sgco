@@ -1,11 +1,13 @@
 package com.arielsonsantos.sgco.driver;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Driver implements Serializable {
@@ -15,6 +17,10 @@ public class Driver implements Serializable {
     private Integer id;
     private String nome;
     private DriverStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.driver")
+    private Set<RentalContainerHistory> rentalContainerHistories = new HashSet<>();
 
     public Driver() {
     }
@@ -46,6 +52,10 @@ public class Driver implements Serializable {
 
     public void setStatus(DriverStatus status) {
         this.status = status;
+    }
+
+    public Set<RentalContainerHistory> getRentalContainerHistories() {
+        return rentalContainerHistories;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.arielsonsantos.sgco.vehicle;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class VehicleListDTO implements Serializable {
 
@@ -8,6 +11,7 @@ public class VehicleListDTO implements Serializable {
     private String marca;
     private String modelo;
     private VehicleStatus status;
+    private Set<Integer> rentals = new HashSet<>();
 
     public VehicleListDTO() {
     }
@@ -16,6 +20,7 @@ public class VehicleListDTO implements Serializable {
         this.marca = vehicle.getMarca();
         this.modelo = vehicle.getModelo();
         this.status = vehicle.getStatus();
+        this.rentals = vehicle.getRentalContainerHistories().stream().map(rentalContainerHistory -> rentalContainerHistory.getRental().getId()).collect(Collectors.toSet());
     }
 
     public Integer getId() {
@@ -26,23 +31,15 @@ public class VehicleListDTO implements Serializable {
         return marca;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
     public String getModelo() {
         return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
     }
 
     public VehicleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(VehicleStatus status) {
-        this.status = status;
+    public Set<Integer> getRentals() {
+        return rentals;
     }
 }

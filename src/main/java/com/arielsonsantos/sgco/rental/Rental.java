@@ -2,8 +2,10 @@ package com.arielsonsantos.sgco.rental;
 
 import com.arielsonsantos.sgco.address.Address;
 import com.arielsonsantos.sgco.client.Client;
+import com.arielsonsantos.sgco.container.Container;
 import com.arielsonsantos.sgco.dumplocation.DumpLocation;
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistory;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistoryStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,8 +35,8 @@ public class Rental implements Serializable {
     @JoinTable(name = "rental_dump", joinColumns = @JoinColumn(name = "rental_id"), inverseJoinColumns = @JoinColumn(name = "dump_id"))
     private List<DumpLocation> dumpLocations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id.container")
-    private Set<RentalContainers> rentalContainers = new HashSet<>();
+    @OneToMany(mappedBy = "id.rental")
+    private Set<RentalContainerHistory> rentalContainerHistories = new HashSet<>();
 
     public Rental() {
     }
@@ -74,9 +76,11 @@ public class Rental implements Serializable {
     public Double getTotal() {
         total = 0D;
 
-        for(RentalContainers rentalContainers : this.rentalContainers) {
-            total += rentalContainers.getContainer().getTipo().getValor();
-        }
+        this.rentalContainerHistories.forEach(rentalContainerHistory -> {
+            if (rentalContainerHistory.getStatus() == RentalContainerHistoryStatus.ENTREGA) {
+                total += rentalContainerHistory.getContainer().getTipo().getValor();
+            }
+        });
 
         return total;
     }
@@ -113,8 +117,8 @@ public class Rental implements Serializable {
         return dumpLocations;
     }
 
-    public Set<RentalContainers> getRentalContainers() {
-        return rentalContainers;
+    public Set<RentalContainerHistory> getRentalContainerHistories() {
+        return rentalContainerHistories;
     }
 
     @Override

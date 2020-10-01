@@ -2,7 +2,7 @@ package com.arielsonsantos.sgco.container;
 
 import com.arielsonsantos.sgco.containertype.ContainerType;
 import com.arielsonsantos.sgco.rental.Rental;
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -26,8 +26,8 @@ public class Container implements Serializable {
     private ContainerStatus status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "id.rental")
-    private Set<RentalContainers> rentalContainers = new HashSet<>();
+    @OneToMany(mappedBy = "id.container")
+    private Set<RentalContainerHistory> rentalContainerHistories = new HashSet<>();
 
     public Container() {
     }
@@ -70,16 +70,16 @@ public class Container implements Serializable {
         this.status = status;
     }
 
-    public Set<RentalContainers> getRentalContainers() {
-        return rentalContainers;
+    public Set<RentalContainerHistory> getRentalContainerHistories() {
+        return rentalContainerHistories;
     }
 
     @JsonIgnore // TODO alterar para @JsonBackReference?
     public List<Rental> getRentals() {
          List<Rental> rentals = new ArrayList<>();
 
-         for(RentalContainers  rentalContainers: this.rentalContainers) {
-             rentals.add(rentalContainers.getRental());
+         for(RentalContainerHistory  rentalContainerHistory: this.rentalContainerHistories) {
+             rentals.add(rentalContainerHistory.getRental());
          }
 
          return rentals;

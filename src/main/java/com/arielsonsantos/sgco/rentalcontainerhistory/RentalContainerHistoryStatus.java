@@ -1,12 +1,12 @@
-package com.arielsonsantos.sgco.rentalcontainers;
+package com.arielsonsantos.sgco.rentalcontainerhistory;
 
-public enum RentalContainersStatus {
+public enum RentalContainerHistoryStatus {
     ENTREGA(0),
     RETIRADA(1);
 
     private final Integer status;
 
-    RentalContainersStatus(Integer status) {
+    RentalContainerHistoryStatus(Integer status) {
         this.status = status;
     }
 

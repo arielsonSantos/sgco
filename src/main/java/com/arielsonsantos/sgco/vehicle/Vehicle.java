@@ -1,11 +1,13 @@
 package com.arielsonsantos.sgco.vehicle;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Vehicle implements Serializable {
@@ -17,6 +19,10 @@ public class Vehicle implements Serializable {
     private String marca;
     private String modelo;
     private VehicleStatus status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.vehicle")
+    private Set<RentalContainerHistory> rentalContainerHistories = new HashSet<>();
 
     public Vehicle() {
     }
@@ -57,6 +63,10 @@ public class Vehicle implements Serializable {
 
     public void setStatus(VehicleStatus status) {
         this.status = status;
+    }
+
+    public Set<RentalContainerHistory> getRentalContainerHistories() {
+        return rentalContainerHistories;
     }
 
     @Override

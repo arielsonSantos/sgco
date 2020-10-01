@@ -13,8 +13,6 @@ import com.arielsonsantos.sgco.containertype.ContainerTypeRepository;
 import com.arielsonsantos.sgco.driver.Driver;
 import com.arielsonsantos.sgco.driver.DriverRepository;
 import com.arielsonsantos.sgco.driver.DriverStatus;
-import com.arielsonsantos.sgco.drivervehicle.DriverVehicle;
-import com.arielsonsantos.sgco.drivervehicle.DriverVehicleRepository;
 import com.arielsonsantos.sgco.dumplocation.DumpLocation;
 import com.arielsonsantos.sgco.dumplocation.DumpLocationRepository;
 import com.arielsonsantos.sgco.phone.Phone;
@@ -22,9 +20,9 @@ import com.arielsonsantos.sgco.phone.PhoneRepository;
 import com.arielsonsantos.sgco.rental.Rental;
 import com.arielsonsantos.sgco.rental.RentalRepository;
 import com.arielsonsantos.sgco.rental.RentalStatus;
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainers;
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainersRepository;
-import com.arielsonsantos.sgco.rentalcontainers.RentalContainersStatus;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistory;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistoryRepository;
+import com.arielsonsantos.sgco.rentalcontainerhistory.RentalContainerHistoryStatus;
 import com.arielsonsantos.sgco.vehicle.Vehicle;
 import com.arielsonsantos.sgco.vehicle.VehicleRepository;
 import com.arielsonsantos.sgco.vehicle.VehicleStatus;
@@ -64,10 +62,7 @@ public class Application implements CommandLineRunner {
 	DriverRepository driverRepository;
 
 	@Autowired
-	RentalContainersRepository rentalContainersRepository;
-
-	@Autowired
-	DriverVehicleRepository driverVehicleRepository;
+	RentalContainerHistoryRepository rentalContainerHistoryRepository;
 
 	@Autowired
 	PhoneRepository phoneRepository;
@@ -77,7 +72,7 @@ public class Application implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 
 		// Endereços
 		Address vidal = new Address("87050210", "336");
@@ -133,24 +128,17 @@ public class Application implements CommandLineRunner {
 		arielson.getPhones().addAll(Arrays.asList(phoneFrancisca, phoneCarol, phoneJoao));
 		clientRepository.saveAll(Arrays.asList(carol, arielson));
 
-		// Motorista - Veículo
-		DriverVehicle celsoMercedes = new DriverVehicle(celso, mercedes);
-		DriverVehicle celsoVolvo = new DriverVehicle(celso, volvo);
-		DriverVehicle odilonVolvo = new DriverVehicle(odilon, volvo);
-		DriverVehicle odilonMercedes = new DriverVehicle(odilon, mercedes);
-		driverVehicleRepository.saveAll(Arrays.asList(celsoMercedes, celsoVolvo, odilonMercedes, odilonVolvo));
-
 		// Locação - Local de despejo
 		rental1.getDumpLocations().addAll(Arrays.asList(pedreira, outroLugar));
 		rental2.getDumpLocations().add(outroLugar);
 		rentalRepository.saveAll(Arrays.asList(rental1, rental2));
 
 		// Locação - Caçambas
-		RentalContainers rel1 = new RentalContainers(rental1, container1, RentalContainersStatus.ENTREGA);
-		RentalContainers rel2 = new RentalContainers(rental1, container1, RentalContainersStatus.RETIRADA);
-		RentalContainers rel3 = new RentalContainers(rental1, container2, RentalContainersStatus.ENTREGA);
-		RentalContainers rel4 = new RentalContainers(rental1, container2, RentalContainersStatus.RETIRADA);
-		RentalContainers rel5 = new RentalContainers(rental2, container1, RentalContainersStatus.ENTREGA);
-		rentalContainersRepository.saveAll(Arrays.asList(rel1, rel2, rel3, rel4, rel5));
+		RentalContainerHistory rel1 = new RentalContainerHistory(rental1, celso, mercedes, container1, new Date(), RentalContainerHistoryStatus.ENTREGA);
+		RentalContainerHistory rel2 = new RentalContainerHistory(rental1, odilon, volvo, container2, new Date(), RentalContainerHistoryStatus.ENTREGA);
+		RentalContainerHistory rel3 = new RentalContainerHistory(rental1, celso, mercedes, container1, new Date(), RentalContainerHistoryStatus.RETIRADA);
+		RentalContainerHistory rel4 = new RentalContainerHistory(rental1, odilon, mercedes, container2, new Date(), RentalContainerHistoryStatus.RETIRADA);
+		RentalContainerHistory rel5 = new RentalContainerHistory(rental2, odilon, mercedes, container1, new Date(), RentalContainerHistoryStatus.ENTREGA);
+		rentalContainerHistoryRepository.saveAll(Arrays.asList(rel1, rel2, rel3, rel4, rel5));
 	}
 }

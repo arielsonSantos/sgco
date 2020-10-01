@@ -1,12 +1,16 @@
 package com.arielsonsantos.sgco.driver;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DriverListDTO implements Serializable {
 
     private Integer id;
     private String nome;
     private DriverStatus status;
+    private Set<Integer> rentals = new HashSet<>();
 
     public DriverListDTO() {
     }
@@ -14,6 +18,7 @@ public class DriverListDTO implements Serializable {
     public DriverListDTO(Driver driver) {
         this.nome = driver.getNome();
         this.status = driver.getStatus();
+        this.rentals = driver.getRentalContainerHistories().stream().map(rentalContainerHistory -> rentalContainerHistory.getRental().getId()).collect(Collectors.toSet());
     }
 
     public Integer getId() {
@@ -24,15 +29,11 @@ public class DriverListDTO implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public DriverStatus getStatus() {
         return status;
     }
 
-    public void setStatus(DriverStatus status) {
-        this.status = status;
+    public Set<Integer> getRentals() {
+        return rentals;
     }
 }
